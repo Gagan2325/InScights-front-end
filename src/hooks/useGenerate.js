@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-const API_BASE = process.env.REACT_APP_API_URL || '/api';
+const API_BASE = 'https://in-scights-backend.vercel.app/api';
 
 /**
  * useGenerate — manages the full generation lifecycle:
