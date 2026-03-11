@@ -52,6 +52,7 @@ const defaultForm = {
   competitor: '',
   competitorBrand: '',
   contentBrief: '',
+  negativePrompt: '',
   generateBehavioural: true,
   generateClinical: true,
   generateSolutionFor: true,
@@ -69,7 +70,9 @@ export function BriefForm({ onSubmit, loading }) {
   const [form, setForm] = useState(defaultForm);
 
   const set = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
-  const toggle = (field) => setForm(prev => ({ ...prev, [field]: !prev[field] }));
+  const toggle = (field) => {
+    setForm(prev => ({ ...prev, [field]: !prev[field] }));
+  };
 
   const fillExample = (example) => {
     setForm({ ...defaultForm, ...example, generateSolutionVs: !!example.competitor });
@@ -155,6 +158,18 @@ export function BriefForm({ onSubmit, loading }) {
             />
           </div>
         </div>
+        <div className="brief-row">
+          <div className="field-group">
+            <label className="field-label">Negative Prompt <span style={{fontWeight:400}}>(optional)</span></label>
+            <textarea
+              className="brief-textarea"
+              value={form.negativePrompt}
+              onChange={e => set('negativePrompt', e.target.value)}
+              placeholder={"What should be avoided in the output? (e.g. avoid mentioning side effects, avoid certain claims, etc.)"}
+              minLength={0}
+            />
+          </div>
+        </div>
 
         {/* Generate toggles */}
         <div className="outputs-row">
@@ -163,12 +178,12 @@ export function BriefForm({ onSubmit, loading }) {
             <div className="generate-block-label">💡 Need Statements</div>
             <div className="toggles">
               <label className={`toggle-chip ${form.generateBehavioural ? 'active' : ''}`} onClick={() => toggle('generateBehavioural')}>
-                <input type="checkbox" readOnly checked={form.generateBehavioural} />
                 <span className="chip-icon">🧠</span> Behavioural Need
+                {form.generateBehavioural && <span style={{marginLeft:6, fontWeight:700, fontSize:14}}>&#10003;</span>}
               </label>
               <label className={`toggle-chip ${form.generateClinical ? 'active' : ''}`} onClick={() => toggle('generateClinical')}>
-                <input type="checkbox" readOnly checked={form.generateClinical} />
                 <span className="chip-icon">🩺</span> Clinical Need
+                {form.generateClinical && <span style={{marginLeft:6, fontWeight:700, fontSize:14}}>&#10003;</span>}
               </label>
             </div>
           </div>
@@ -177,15 +192,12 @@ export function BriefForm({ onSubmit, loading }) {
             <div className="generate-block-label">✅ Solution Statements</div>
             <div className="toggles">
               <label className={`toggle-chip ${form.generateSolutionFor ? 'active' : ''}`} onClick={() => toggle('generateSolutionFor')}>
-                <input type="checkbox" readOnly checked={form.generateSolutionFor} />
                 <span className="chip-icon">🧬</span> In favour of molecule
+                {form.generateSolutionFor && <span style={{marginLeft:6, fontWeight:700, fontSize:14}}>&#10003;</span>}
               </label>
               <label className={`toggle-chip ${form.generateSolutionVs ? 'active' : ''}`} onClick={() => toggle('generateSolutionVs')}>
-                <input type="checkbox" readOnly checked={form.generateSolutionVs} />
                 <span className="chip-icon">⚔️</span> vs Competitor molecule
-              </label>
-              <label className="toggle-chip active" style={{ cursor: 'default' }}>
-                <span className="chip-icon">📎</span> With citations
+                {form.generateSolutionVs && <span style={{marginLeft:6, fontWeight:700, fontSize:14}}>&#10003;</span>}
               </label>
             </div>
           </div>
@@ -204,17 +216,6 @@ export function BriefForm({ onSubmit, loading }) {
                 onChange={e => set('competitor', e.target.value)}
               />
             </div>
-            <div className="field-group">
-              <label className="field-label">Competitor Brand</label>
-              <input
-                type="text"
-                className="field-input"
-                placeholder="e.g. Omez, Pantodac"
-                value={form.competitorBrand}
-                onChange={e => set('competitorBrand', e.target.value)}
-              />
-            </div>
-            <div className="field-group" />
           </div>
         )}
 

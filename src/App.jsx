@@ -246,9 +246,16 @@ export default function App() {
           border-radius: 100px; padding: 7px 14px;
           font-size: 12px; font-weight: 400; color: var(--ink-mid);
           cursor: pointer; transition: all 0.2s; user-select: none;
+          pointer-events: auto !important;
         }
-        .toggle-chip input { display: none; }
-        .toggle-chip.active { background: var(--teal-light); border-color: rgba(0,119,168,0.3); color: var(--teal); font-weight: 500; }
+        .toggle-chip * { pointer-events: none; }
+        .toggle-chip.active {
+          background: var(--teal);
+          border-color: var(--teal);
+          color: #fff;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0,119,168,0.10);
+        }
         .chip-icon { font-size: 13px; }
 
         /* Sources */
